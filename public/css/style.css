@@ -17,7 +17,6 @@ body {
 }
 
 section {
-    min-height: 100vh;
     padding-top: 80px; /* Offset for fixed navbar */
     border-bottom: 1px solid var(--blood-red);
 }
@@ -100,6 +99,7 @@ section {
 
 /* Home Section (Lobby) */
 #home {
+    min-height: 100vh;
     background: url('/images/lilith-background.jpg') no-repeat top center;
     background-size: cover;
     position: relative;
@@ -248,7 +248,7 @@ section {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     border: 2px solid var(--blood-red);
@@ -335,4 +335,11 @@ section {
 .copyright {
     font-size: 0.8rem;
     color: #6c757d;
+}
+
+/* Loadouts/Merits Splitter */
+@media (min-width: 992px) { /* Equivalent to Bootstrap's lg breakpoint */
+    .loadouts-col {
+        border-right: 2px solid var(--blood-red);
+    }
 }

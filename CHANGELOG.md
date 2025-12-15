@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.1] - 2025-12-15
+
+### Fixed
+-   **Icon Alignment**: Fixed an issue where the "Merit Badge" icons were off-center by changing their CSS `display` property from `inline-flex` to `flex`.
+
+## [1.9.0] - 2025-12-15
+
+### Changed
+-   **CSS Refactor**: Removed `min-height: 100vh;` from the general `section` rule and applied it specifically to the `#home` section. This ensures only the home section spans the full viewport height, allowing other sections to adjust dynamically.
+
+## [1.8.0] - 2025-12-15
+
+### Changed
+-   **Layout Enhancement**: Added a visible red column splitter and increased the horizontal gap (`gx-5`) between the "Loadouts" and "Merit Badges" sections for improved visual separation.
+
+## [1.7.1] - 2025-12-15
+
+### Changed
+-   **Layout Tweak**: Adjusted the column split for the "Loadouts" and "Merit Badges" section to be an equal 50/50 layout on large screens for better visual balance.
+
+## [1.7.0] - 2025-12-15
+
+### Changed
+-   **Layout Refactor**: Combined the "Loadouts" and "Merit Badges" sections into a single, two-column responsive layout to improve spacing and user experience.
+-   **Styling Fix**: Corrected the vertical alignment of the icons in the "Merit Badges" section by applying Bootstrap flexbox utilities.
+-   **Code Cleanup**: Removed the now-redundant `merit_badges.hbs` partial file and integrated its logic directly into `index.hbs`.
+
 ## [1.6.0] - 2025-12-15
 
 ### Added

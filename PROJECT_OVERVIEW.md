@@ -13,8 +13,8 @@ The application is built on a classic Node.js and Express stack, serving a singl
 
 -   **`views/`**: This directory holds all the Handlebars templates.
     -   **`layout.hbs`**: This is the main template file. It defines the overall HTML structure, including the `<head>` (with links to Bootstrap 5 and the custom `style.css`) and the `<body>`. It includes the navbar and footer partials and uses `{{{body}}}` to inject the content from other view files.
-    -   **`index.hbs`**: This file contains the HTML structure for the entire single-page layout. The "Field Ops" (Projects) section is now dynamic, using a Handlebars `{{#each}}` loop to iterate over the `projects` data passed from the router and render a card for each repository.
-    -   **`partials/`**: This subdirectory contains reusable pieces of templates.
+    -   **`index.hbs`**: This file contains the HTML structure for the entire single-page layout. The "Loadouts" (Skills) and "Merit Badges" (Soft Skills) sections are now combined into a single responsive, two-column layout. The "Field Ops" (Projects) section is dynamic, using a Handlebars `{{#each}}` loop to iterate over the `projects` data passed from the router and render a card for each repository.
+    -   **`partials/`**: This subdirectory contains reusable pieces of templates. The `merit_badges.hbs` partial has been removed, and its content integrated into `index.hbs`.
         -   **`navbar.hbs`**: The site's top navigation menu.
         -   **`footer.hbs`**: The site's footer.
 

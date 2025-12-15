@@ -8,40 +8,80 @@
         </div>
     </section>
 
-    <!-- Loadouts Section (Skills) -->
+    <!-- Loadouts & Merits Section -->
     <section id="loadouts" class="py-5">
         <div class="container">
-            <h2 class="text-center display-4 corruption-glitch" data-text="Loadouts">Loadouts</h2>
-            <div class="row mt-5">
-                <div class="col-md-6 mb-4">
-                    <h5 class="corruption-glitch" data-text="Node.js">Node.js</h5>
-                    <div class="progress" role="progressbar" aria-label="Node.js skill" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 95%"></div>
+            <div class="row gx-5">
+                <!-- Column 1: Loadouts -->
+                <div class="col-lg-6 loadouts-col">
+                    <h2 class="text-center text-lg-start display-4 corruption-glitch" data-text="Loadouts">Loadouts</h2>
+                    <div class="row mt-5">
+                        <div class="col-md-6 mb-4">
+                            <h5 class="corruption-glitch" data-text="Node.js">Node.js</h5>
+                            <div class="progress" role="progressbar" aria-label="Node.js skill" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 class="corruption-glitch" data-text="Express.js">Express.js</h5>
+                            <div class="progress" role="progressbar" aria-label="Express.js skill" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 class="corruption-glitch" data-text="Handlebars (HBS)">Handlebars (HBS)</h5>
+                            <div class="progress" role="progressbar" aria-label="HBS skill" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 class="corruption-glitch" data-text="Bootstrap 5">Bootstrap 5</h5>
+                            <div class="progress" role="progressbar" aria-label="Bootstrap 5 skill" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6 mb-4">
-                    <h5 class="corruption-glitch" data-text="Express.js">Express.js</h5>
-                    <div class="progress" role="progressbar" aria-label="Express.js skill" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 90%"></div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <h5 class="corruption-glitch" data-text="Handlebars (HBS)">Handlebars (HBS)</h5>
-                    <div class="progress" role="progressbar" aria-label="HBS skill" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 85%"></div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <h5 class="corruption-glitch" data-text="Bootstrap 5">Bootstrap 5</h5>
-                    <div class="progress" role="progressbar" aria-label="Bootstrap 5 skill" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 100%"></div>
+
+                <!-- Column 2: Merit Badges -->
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <h2 class="text-center text-lg-start display-4 corruption-glitch" data-text="Merit Badges">Merit Badges</h2>
+                    <div class="row mt-5">
+                        <!-- Merit Badge 1 -->
+                        <div class="col-md-4 col-lg-4 mb-4">
+                            <div class="intel-folder p-3 d-flex flex-column align-items-center text-center">
+                                <div class="medal-icon">
+                                    <i class="bi bi-people-fill" style="padding-top: 10px; margin-left: 2.5%;"></i>
+                                </div>
+                                <h5 class="mt-3 corruption-glitch fs-6" data-text="Squad Leader">Squad Leader</h5>
+                                <p class="mb-0 small" style="color: var(--slate-grey);">Leadership</p>
+                            </div>
+                        </div>
+                        <!-- Merit Badge 2 -->
+                        <div class="col-md-4 col-lg-4 mb-4">
+                            <div class="intel-folder p-3 d-flex flex-column align-items-center text-center">
+                                <div class="medal-icon">
+                                    <i class="bi bi-bug-fill" style="padding-top: 10px; margin-left: 2.5%;"></i>
+                                </div>
+                                <h5 class="mt-3 corruption-glitch fs-6" data-text="Bug Hunter">Bug Hunter</h5>
+                                <p class="mb-0 small" style="color: var(--slate-grey);">Debugging</p>
+                            </div>
+                        </div>
+                        <!-- Merit Badge 3 -->
+                        <div class="col-md-4 col-lg-4 mb-4">
+                            <div class="intel-folder p-3 d-flex flex-column align-items-center text-center">
+                                <div class="medal-icon">
+                                    <i class="bi bi-clock-history" style="padding-top: 10%; margin-left: 2.5%;"></i>
+                                </div>
+                                <h5 class="mt-3 corruption-glitch fs-6" data-text="Crunch Time">Crunch Time</h5>
+                                <p class="mb-0 small" style="color: var(--slate-grey);">Pressure</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    {{> merit_badges}}
 
     <!-- Field Ops Section (Projects) -->
     <section id="field-ops" class="py-5">
