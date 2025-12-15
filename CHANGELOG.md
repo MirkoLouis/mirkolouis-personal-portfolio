@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2025-12-15
+
+### Added
+-   **API Caching**: Implemented an in-memory caching strategy for the GitHub API requests. The project data is now fetched only once on server startup, preventing API rate-limit errors during development with `nodemon`. This significantly improves performance and stability.
+-   **Configuration**: Updated `.gitignore` to include patterns for potential cache files.
+
+### Changed
+-   **Architecture**: Refactored `routes/index.js` to separate the data-fetching logic from the request-handling logic.
+
+## [1.9.2] - 2025-12-15
+
+### Added
+-   **Git Ignore File**: Created a `.gitignore` file to ignore commonly ignored files and folders in a Node.js project, including `GEMINI.md`.
+
 ## [1.9.1] - 2025-12-15
 
 ### Fixed
