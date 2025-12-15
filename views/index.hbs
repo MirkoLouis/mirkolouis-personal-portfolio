@@ -1,0 +1,101 @@
+<main>
+    <!-- Home Section (Lobby) -->
+    <section id="home" class="d-flex align-items-center">
+        <canvas id="particle-canvas"></canvas>
+        <div class="container text-start">
+            <h1 class="display-3 corruption-glitch" data-text="Operator: {{name}}">Operator: {{name}}</h1>
+            <h2 class="status-deployed">Status: DEPLOYED</h2>
+        </div>
+    </section>
+
+    <!-- Loadouts Section (Skills) -->
+    <section id="loadouts" class="py-5">
+        <div class="container">
+            <h2 class="text-center display-4 corruption-glitch" data-text="Loadouts">Loadouts</h2>
+            <div class="row mt-5">
+                <div class="col-md-6 mb-4">
+                    <h5 class="corruption-glitch" data-text="Node.js">Node.js</h5>
+                    <div class="progress" role="progressbar" aria-label="Node.js skill" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: 95%"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h5 class="corruption-glitch" data-text="Express.js">Express.js</h5>
+                    <div class="progress" role="progressbar" aria-label="Express.js skill" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h5 class="corruption-glitch" data-text="Handlebars (HBS)">Handlebars (HBS)</h5>
+                    <div class="progress" role="progressbar" aria-label="HBS skill" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h5 class="corruption-glitch" data-text="Bootstrap 5">Bootstrap 5</h5>
+                    <div class="progress" role="progressbar" aria-label="Bootstrap 5 skill" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{> merit_badges}}
+
+    <!-- Field Ops Section (Projects) -->
+    <section id="field-ops" class="py-5">
+        <div class="container">
+            <h2 class="text-center display-4 corruption-glitch" data-text="Field Ops">Field Ops</h2>
+            <div class="row mt-5">
+                {{#each projects}}
+                <div class="col-md-4 mb-4">
+                    <div class="card intel-folder">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title corruption-glitch" data-text="{{this.name}}">{{this.name}}</h5>
+                            <p class="card-text flex-grow-1">
+                                {{#if this.description}}
+                                    {{this.description}}
+                                {{else}}
+                                    No description provided for this operation. Intel remains classified.
+                                {{/if}}
+                            </p>
+                            <a href="{{this.html_url}}" class="btn btn-outline-danger mt-auto" target="_blank" rel="noopener noreferrer">View Intel</a>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </section>
+
+    {{> service_record}}
+
+    <!-- Contact Section (UAV Recon) -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center display-4 corruption-glitch" data-text="UAV Recon">UAV Recon</h2>
+            <div class="row mt-5 align-items-center">
+                <div class="col-md-6">
+                    <div class="radar-container">
+                        <div class="radar-sweep"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <form>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Callsign (Name)">
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Secure Channel (Email)">
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="5" placeholder="Transmission (Message)"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">SEND TRANSMISSION</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
