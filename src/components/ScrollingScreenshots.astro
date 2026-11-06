@@ -1,0 +1,152 @@
+---
+// Tilted, endlessly scrolling columns of screenshots (decorative intro background)
+import { Image } from "astro:assets";
+import { distributeColumns, type ShowcaseItem } from "../lib/showcase";
+
+interface Props {
+    items: ShowcaseItem[];
+}
+
+const { items } = Astro.props;
+
+// Six columns (two left of the intro card's centre line, four from it rightwards),
+// each tall enough (10+ tiles) that one copy of the list covers the viewport on phones too
+const columns = distributeColumns(items, 6, 10);
+---
+<div class="showcase" aria-hidden="true">
+    <div class="grid">
+        {columns.map((column, c) => (
+            <div class={`column column-${c + 1} ${c % 2 === 0 ? "up" : "down"}`}>
+                {/* The list is rendered twice so translateY(-50%) lands on an identical frame */}
+                <div class="track">
+                    {[...column, ...column].map((item, i) => (
+                        item.image
+                            ? <Image
+                                class="tile"
+                                src={item.image}
+                                alt=""
+                                width={960}
+                                widths={[480, 960]}
+                                sizes="(max-width: 767px) 60vw, 30vw"
+                                style={item.objectPosition ? `object-position: ${item.objectPosition}` : undefined}
+                                decoding="async"
+                                loading={c === 0 ? "eager" : "lazy"}
+                            />
+                            : <div class="tile" style={`background: ${item.color}`} data-index={i}></div>
+                    ))}
+                </div>
+            </div>
+        ))}
+    </div>
+</div>
+
+<style>
+    /* Fill the intro section and ignore pointer input */
+    .showcase {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    /* Column size: about --visible-columns columns fit across the screen.
+       Position: the gap between columns 2 and 3 sits on the horizontal centre of
+       the intro card, so the card covers half of each neighbouring column instead
+       of hiding one whole column. Card centre = centered column's left edge
+       + gutter + half the card width (same values the intro card uses).
+       Rotation pivots on the grid centre, which is level with the card, so the
+       alignment holds at the card's height. Tall overhang covers tilted corners. */
+    .grid {
+        --visible-columns: 3.5;
+        --gap: 20px;
+        --col: calc(100% / var(--visible-columns) - var(--gap));
+        --card-center: calc(
+            max(0px, (100% - var(--max-width)) / 2)
+            + var(--gutter)
+            + min(var(--intro-text-width), 100% - 2 * var(--gutter)) / 2
+        );
+        position: absolute;
+        top: -35%;
+        bottom: -35%;
+        left: calc(var(--card-center) - 2 * var(--col) - 1.5 * var(--gap));
+        width: calc(6 * var(--col) + 5 * var(--gap));
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: var(--gap);
+        transform: rotate(-12deg);
+    }
+
+    .column {
+        overflow: hidden;
+    }
+
+    /* Every tile carries the same bottom margin, so each half of the track is N × (tile + 20px) */
+    .tile {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        box-shadow: 0 6px 18px rgb(11 31 42 / 0.08);
+    }
+
+    /* Only transform is animated: compositor-only, no layout or paint per frame.
+       flow-root keeps the last tile's margin inside the track (no margin collapse),
+       so translateY(-50%) is exactly one copy of the list and the loop has no jump. */
+    .track {
+        display: flow-root;
+        will-change: transform;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+
+    .up .track {
+        animation-name: scroll-up;
+    }
+
+    .down .track {
+        animation-name: scroll-down;
+    }
+
+    /* Slightly different speeds per column */
+    .column-1 .track { animation-duration: 60s; }
+    .column-2 .track { animation-duration: 75s; }
+    .column-3 .track { animation-duration: 55s; }
+    .column-4 .track { animation-duration: 70s; }
+    .column-5 .track { animation-duration: 65s; }
+    .column-6 .track { animation-duration: 58s; }
+
+    @keyframes scroll-up {
+        from { transform: translateY(0); }
+        to { transform: translateY(-50%); }
+    }
+
+    @keyframes scroll-down {
+        from { transform: translateY(-50%); }
+        to { transform: translateY(0); }
+    }
+
+    /* Phones: two columns */
+    @media (max-width: 767px) {
+        .grid {
+            left: -10%;
+            width: 120%;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .column-3,
+        .column-4,
+        .column-5,
+        .column-6 {
+            display: none;
+        }
+    }
+
+    /* Respect reduced-motion preferences: static columns */
+    @media (prefers-reduced-motion: reduce) {
+        .track {
+            animation: none;
+        }
+    }
+</style>

@@ -1,0 +1,68 @@
+---
+// Stack section: technologies grouped by layer, each with a Nerd Font icon
+import { stackGroups } from "../data/stack";
+import { glyph } from "../lib/icons";
+---
+<section class="section" id="stack">
+    <div class="container">
+        <h2 class="section-title">Stack</h2>
+        <div class="groups">
+            {stackGroups.map((group) => (
+                <div class="group">
+                    <h3>{group.title}</h3>
+                    <ul>
+                        {group.items.map((item) => (
+                            <li>
+                                <span class="icon" aria-hidden="true">{glyph(item.icon)}</span>
+                                {item.label}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    /* One card per layer, wrapping responsively */
+    .groups {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+        gap: 20px;
+    }
+
+    .group {
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-top: 3px solid var(--accent);
+        border-radius: var(--radius);
+    }
+
+    h3 {
+        font-size: 1.05rem;
+        margin-bottom: 12px;
+    }
+
+    ul {
+        display: grid;
+        gap: 10px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Icons in the accent colour at a fixed width so labels align */
+    .icon {
+        width: 1.4em;
+        font-size: 1.25rem;
+        text-align: center;
+        color: var(--accent);
+    }
+</style>

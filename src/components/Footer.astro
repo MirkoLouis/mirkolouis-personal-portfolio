@@ -1,0 +1,29 @@
+---
+// Footer: copyright with the build year (contact links live in the Contact section just above)
+import { site } from "../data/site";
+
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+    <div class="container inner">
+        <p>© {year} {site.name}</p>
+    </div>
+</footer>
+
+<style>
+    .footer {
+        border-top: 1px solid var(--border);
+        font-size: 0.9rem;
+        color: var(--muted);
+    }
+
+    /* Single centered line */
+    .inner {
+        padding-block: 24px;
+        text-align: center;
+    }
+
+    p {
+        margin: 0;
+    }
+</style>

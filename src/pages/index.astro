@@ -1,0 +1,31 @@
+---
+// Home page: the whole single-page portfolio
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Intro from "../components/Intro.astro";
+import AboutSection from "../components/AboutSection.astro";
+import ProjectsSection from "../components/ProjectsSection.astro";
+import NixosSection from "../components/NixosSection.astro";
+import Stack from "../components/Stack.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../data/site";
+import { nixosConfig } from "../data/nixos";
+import { loadRepos } from "../lib/github";
+
+// Fetch GitHub data once per build and share it between sections
+const repos = await loadRepos();
+const now = new Date();
+---
+<Base title={site.title} description={site.tagline}>
+    <Nav />
+    <main>
+        <Intro />
+        <AboutSection />
+        <ProjectsSection repos={repos} now={now} shownElsewhere={nixosConfig.repo ? [nixosConfig.repo] : []} />
+        <Stack />
+        <NixosSection repos={repos} now={now} />
+        <Contact />
+    </main>
+    <Footer />
+</Base>

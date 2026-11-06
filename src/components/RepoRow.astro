@@ -1,0 +1,70 @@
+---
+// One row of the "More on GitHub" list
+import type { GitHubRepo } from "../lib/types";
+import { formatRelative } from "../lib/format";
+
+interface Props {
+    repo: GitHubRepo;
+    now: Date;
+}
+
+const { repo, now } = Astro.props;
+---
+<li class="row">
+    <a href={repo.html_url} target="_blank" rel="noopener noreferrer">{repo.name}</a>
+    {repo.description && <span class="desc">{repo.description}</span>}
+    <span class="meta">
+        {repo.language && <span>{repo.language}</span>}
+        <span>pushed {formatRelative(repo.pushed_at, now)}</span>
+    </span>
+</li>
+
+<style>
+    /* One repo per row: name, description, meta */
+    .row {
+        display: grid;
+        grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: baseline;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    /* Repo name: no underline; colour change on hover instead */
+    a {
+        font-weight: 700;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+    }
+
+    a:hover {
+        color: var(--text);
+    }
+
+    .desc {
+        grid-column: 2;
+        color: var(--muted);
+    }
+
+    .meta {
+        grid-column: 3;
+        display: flex;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+
+    /* Phones: stack name, description and meta */
+    @media (max-width: 767px) {
+        .row {
+            grid-template-columns: 1fr;
+            gap: 4px;
+        }
+
+        .desc,
+        .meta {
+            grid-column: 1;
+        }
+    }
+</style>

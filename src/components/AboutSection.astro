@@ -1,0 +1,63 @@
+---
+// About me: professional photo beside a short introduction
+import { Image } from "astro:assets";
+import { aboutIntro, profilePhoto } from "../data/about";
+---
+<section class="section about" id="about">
+    <div class="container">
+        <h2 class="section-title">About me</h2>
+
+        {/* 50/50: photo and introduction (stacked on phones) */}
+        <div class="split">
+            <Image
+                class="portrait"
+                src={profilePhoto.image}
+                alt={profilePhoto.alt}
+                widths={[400, 602]}
+                sizes="(max-width: 767px) 100vw, 50vw"
+            />
+
+            <div class="intro-text">
+                {aboutIntro.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Photo and introduction side by side */
+    .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(24px, 5vw, 64px);
+        align-items: center;
+    }
+
+    /* Square frame matching the square source photo, so nothing is cropped */
+    .portrait {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+    }
+
+    .intro-text p {
+        margin: 0 0 1em;
+        font-size: 1.1rem;
+        color: var(--muted);
+    }
+
+    /* Lead paragraph slightly larger and darker */
+    .intro-text p:first-child {
+        color: var(--text);
+        font-size: 1.25rem;
+    }
+
+    /* Phones: photo above the text */
+    @media (max-width: 767px) {
+        .split {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

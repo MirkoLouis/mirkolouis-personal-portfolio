@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2026-11-01
+
+### Changed
+-   **Rebuild**: Replaced the Express + Handlebars server with a static Astro site deployed on Vercel.
+-   **Theme**: Removed the MW2/Lilith theme, its background image and effects. New light theme with the Fresh Sky (`#00A7E1`) accent, Inter for text and Inconsolata Nerd Font for projects and icons (both self-hosted subsets).
+-   **Contact**: Replaced the non-functional form with email, LinkedIn and GitHub links.
+
+### Added
+-   **Intro section**: Tilted, endlessly scrolling screenshot background (placeholders until screenshots are added), static under reduced motion.
+-   **Projects**: Curated featured projects (public, private or client work) merged with live GitHub stats, plus a "More on GitHub" list of the 10 most recently pushed repos that fades out and expands.
+-   **Stack**: Technologies grouped by layer with Nerd Font icons.
+-   **Caching**: GitHub is contacted once per build; a daily scheduled rebuild refreshes the data; local dev uses a 24 h disk cache; GitHub failures never fail the build.
+-   **Tooling**: Nix flake dev shell (Node 24, font tooling), Vitest unit tests, GitHub Actions CI and daily rebuild workflow.
+
 ## [2.0.0] - 2025-12-15
 
 ### Added

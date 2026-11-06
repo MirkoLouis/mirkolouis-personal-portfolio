@@ -1,0 +1,75 @@
+---
+// Intro section: full-width scrolling screenshot background with the intro text on a white card
+import ScrollingScreenshots from "./ScrollingScreenshots.astro";
+import { buildShowcaseItems } from "../lib/showcase";
+import { curatedProjects, showcaseScreenshots } from "../data/projects";
+import { site } from "../data/site";
+
+const items = buildShowcaseItems(curatedProjects, showcaseScreenshots);
+---
+<section class="intro" id="top">
+    <ScrollingScreenshots items={items} />
+    <div class="container content">
+        <div class="card">
+            <p class="eyebrow">Hi, I'm</p>
+            <h1>{site.name}</h1>
+            <p class="tagline">{site.tagline}</p>
+            <div class="actions">
+                <a class="btn btn-primary" href="#projects">View projects</a>
+                <a class="btn btn-outline" href="#about">About me</a>
+                <a class="btn btn-outline" href="#contact">Contact</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Full-height intro; the screenshots fill it edge to edge */
+    .intro {
+        position: relative;
+        min-height: min(100svh, 820px);
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        isolation: isolate;
+    }
+
+    .content {
+        position: relative;
+        padding-block: 120px 80px;
+    }
+
+    /* Opaque white card keeps the text readable over any screenshot */
+    .card {
+        max-width: var(--intro-text-width);
+        padding: clamp(24px, 4vw, 44px);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgb(11 31 42 / 0.14);
+    }
+
+    .eyebrow {
+        margin: 0 0 8px;
+        color: var(--accent-text);
+        font-weight: 600;
+    }
+
+    h1 {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+
+    .tagline {
+        font-size: clamp(1rem, 1.6vw, 1.2rem);
+        color: var(--muted);
+        margin: 0 0 32px;
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+</style>

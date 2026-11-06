@@ -1,0 +1,133 @@
+---
+// NixOS section: highlights of my declarative system config, live repo stats and a code excerpt
+import { Code } from "astro:components";
+import type { GitHubRepo } from "../lib/types";
+import { mergeFeatured, projectCodeUrl } from "../lib/github";
+import { formatRelative } from "../lib/format";
+import { glyph } from "../lib/icons";
+import { nixosConfig, nixosExcerpt, nixosHighlights } from "../data/nixos";
+
+interface Props {
+    repos: GitHubRepo[];
+    now: Date;
+}
+
+const { repos, now } = Astro.props;
+
+// Same merge as featured projects: live stats when the build fetched them
+const [config] = mergeFeatured([nixosConfig], repos);
+const codeUrl = projectCodeUrl(config);
+---
+<section class="section nixos" id="nixos">
+    <div class="container">
+        <h2 class="section-title"><span class="icon" aria-hidden="true">{glyph("nixos")}</span> NixOS</h2>
+
+        <div class="layout">
+            <div class="about">
+                <h3>{config.title}</h3>
+                <p class="summary">{config.summary}</p>
+
+                <ul class="highlights">
+                    {nixosHighlights.map((item) => <li>{item}</li>)}
+                </ul>
+
+                {/* Live stats only when the GitHub fetch succeeded */}
+                {config.github && (
+                    <p class="stats">
+                        <span><span class="icon" aria-hidden="true">{glyph("star")}</span> {config.github.stars}<span class="sr-only"> stars</span></span>
+                        <span>pushed {formatRelative(config.github.pushedAt, now)}</span>
+                    </p>
+                )}
+
+                {/* Link survives a failed fetch via the curated repo field */}
+                {codeUrl && (
+                    <a class="btn btn-outline" href={codeUrl} target="_blank" rel="noopener noreferrer">
+                        <span class="icon" aria-hidden="true">{glyph("github")}</span> View config
+                    </a>
+                )}
+            </div>
+
+            <figure class="excerpt">
+                <figcaption>{nixosExcerpt.file}</figcaption>
+                <Code code={nixosExcerpt.code} lang="nix" theme="github-light" />
+            </figure>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Whole section in Inconsolata, like Projects */
+    .nixos {
+        font-family: var(--font-mono);
+    }
+
+    .section-title .icon {
+        color: var(--accent);
+    }
+
+    /* Text beside the code on wide screens, stacked on narrow ones */
+    .layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+        gap: 40px;
+        align-items: start;
+    }
+
+    h3 {
+        font-size: 1.35rem;
+    }
+
+    .summary {
+        color: var(--muted);
+        margin: 0 0 20px;
+    }
+
+    /* Highlights with accent bullets */
+    .highlights {
+        display: grid;
+        gap: 10px;
+        margin: 0 0 24px;
+        padding-left: 1.2em;
+    }
+
+    .highlights li::marker {
+        color: var(--accent);
+    }
+
+    .stats {
+        display: flex;
+        gap: 16px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin: 0 0 20px;
+    }
+
+    /* Code card: file name tab over the highlighted excerpt */
+    .excerpt {
+        margin: 0;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--surface);
+    }
+
+    figcaption {
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.9rem;
+    }
+
+    /* Shiki output: own padding, mono font, horizontal scroll instead of page overflow */
+    .excerpt :global(pre) {
+        margin: 0;
+        padding: 16px;
+        overflow-x: auto;
+        font-family: var(--font-mono);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        background: var(--surface) !important;
+        max-height: 34rem;
+        overflow-y: auto;
+    }
+</style>

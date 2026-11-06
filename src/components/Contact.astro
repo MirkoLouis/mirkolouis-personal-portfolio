@@ -1,0 +1,93 @@
+---
+// Contact section: email, LinkedIn and GitHub as large link cards
+import { site } from "../data/site";
+import { glyph, type IconName } from "../lib/icons";
+
+// Each card: icon, heading, visible link text, and whether it leaves the site
+const contacts: { icon: IconName; label: string; text: string; href: string; external: boolean }[] = [
+    { icon: "email", label: "Email", text: site.email, href: `mailto:${site.email}`, external: false },
+    { icon: "linkedin", label: "LinkedIn", text: "Mark Leo Bagood", href: site.linkedin, external: true },
+    { icon: "github", label: "GitHub", text: "MirkoLouis", href: site.github, external: true },
+];
+---
+<section class="section contact" id="contact">
+    <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="lead">Open to junior backend, full-stack, Linux and DevOps roles, remote or in Mindanao.</p>
+        <ul class="cards">
+            {contacts.map((c) => (
+                <li>
+                    <a
+                        class="card"
+                        href={c.href}
+                        target={c.external ? "_blank" : undefined}
+                        rel={c.external ? "noopener noreferrer" : undefined}
+                    >
+                        <span class="icon" aria-hidden="true">{glyph(c.icon)}</span>
+                        <span class="label">{c.label}</span>
+                        <span class="text">{c.text}</span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .contact {
+        background: var(--surface);
+    }
+
+    .lead {
+        margin: -16px 0 32px;
+        color: var(--muted);
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+        gap: 20px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Whole card is the link */
+    .card {
+        display: grid;
+        gap: 6px;
+        height: 100%;
+        padding: 24px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        text-decoration: none;
+        transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .card:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+    }
+
+    .icon {
+        font-size: 2rem;
+        color: var(--accent);
+    }
+
+    .label {
+        font-weight: 700;
+    }
+
+    .text {
+        color: var(--accent-text);
+        overflow-wrap: anywhere;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .card:hover {
+            transform: none;
+        }
+    }
+</style>

@@ -1,0 +1,30 @@
+# Daily rebuild: asks Vercel to rebuild so GitHub repo data refreshes once a day.
+# Note: this is the documented exception to the web-app-stack rule that Actions only test.
+# It deploys nothing itself; it only calls the Vercel Deploy Hook.
+name: Daily rebuild
+
+on:
+    schedule:
+        - cron: "0 16 * * *" # 16:00 UTC = 00:00 Asia/Manila
+    workflow_dispatch:
+
+permissions: {}
+
+jobs:
+    trigger:
+        runs-on: ubuntu-latest
+        steps:
+            # Fail clearly if the secret was never configured
+            - name: Check deploy hook secret
+              env:
+                  VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+              run: |
+                  if [ -z "$VERCEL_DEPLOY_HOOK" ]; then
+                      echo "::error::VERCEL_DEPLOY_HOOK secret is not set (see README > Deploy setup)"
+                      exit 1
+                  fi
+
+            - name: Trigger Vercel rebuild
+              env:
+                  VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+              run: curl -fsS --retry 3 --retry-all-errors -X POST "$VERCEL_DEPLOY_HOOK"

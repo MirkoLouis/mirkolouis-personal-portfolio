@@ -1,0 +1,188 @@
+---
+// Featured project cards: curated content plus live GitHub stats when available
+import { Image } from "astro:assets";
+import type { FeaturedProject } from "../lib/types";
+import { formatRelative } from "../lib/format";
+import { projectCodeUrl } from "../lib/github";
+import { glyph } from "../lib/icons";
+
+interface Props {
+    projects: FeaturedProject[];
+    now: Date;
+}
+
+const { projects, now } = Astro.props;
+
+// Badge text for non-public work
+const badges = { private: "Private", client: "Client work" } as const;
+---
+<ul class="cards">
+    {projects.map((project) => (
+        <li class="card">
+            {/* First screenshot, or a neutral placeholder block */}
+            {project.screenshots[0]
+                ? <Image
+                    class="shot"
+                    src={project.screenshots[0]}
+                    alt={`${project.title} screenshot`}
+                    width={800}
+                    widths={[400, 800]}
+                    sizes="(max-width: 767px) 100vw, 360px"
+                    style={project.objectPosition ? `object-position: ${project.objectPosition}` : undefined}
+                    loading="lazy"
+                    decoding="async"
+                />
+                : <div class="shot placeholder" aria-hidden="true"></div>}
+
+            <div class="body">
+                <div class="heading">
+                    <h3>{project.title}</h3>
+                    {project.visibility !== "public" && <span class="badge">{badges[project.visibility]}</span>}
+                </div>
+                <p class="summary">{project.summary}</p>
+
+                <ul class="chips" aria-label="Tech stack">
+                    {project.stack.map((tech) => <li>{tech}</li>)}
+                </ul>
+
+                {/* Live stats only exist for public repos found on GitHub */}
+                {project.github && (
+                    <p class="stats">
+                        <span><span class="icon" aria-hidden="true">{glyph("star")}</span> {project.github.stars}<span class="sr-only"> stars</span></span>
+                        {project.github.language && <span>{project.github.language}</span>}
+                        <span>pushed {formatRelative(project.github.pushedAt, now)}</span>
+                    </p>
+                )}
+
+                {/* Code link survives a failed GitHub fetch via the curated repo field */}
+                <p class="links">
+                    {projectCodeUrl(project) && (
+                        <a href={projectCodeUrl(project)} target="_blank" rel="noopener noreferrer">
+                            <span class="icon" aria-hidden="true">{glyph("github")}</span> View code
+                        </a>
+                    )}
+                    {project.demo && (
+                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                            <span class="icon" aria-hidden="true">{glyph("external")}</span> Live demo
+                        </a>
+                    )}
+                </p>
+            </div>
+        </li>
+    ))}
+</ul>
+
+<style>
+    /* Responsive card grid */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+        gap: 24px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 8px 24px rgb(0 167 225 / 0.12);
+    }
+
+    .shot {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .placeholder {
+        background: linear-gradient(135deg, var(--surface), rgb(0 167 225 / 0.15));
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px;
+        flex: 1;
+    }
+
+    .heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .badge {
+        flex-shrink: 0;
+        font-size: 0.75rem;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--muted);
+    }
+
+    .summary {
+        margin: 0;
+        color: var(--muted);
+    }
+
+    /* Stack chips outlined in the accent colour */
+    .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .chips li {
+        font-size: 0.85rem;
+        padding: 2px 10px;
+        border: 1px solid var(--accent);
+        border-radius: 999px;
+    }
+
+    .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--muted);
+    }
+
+    /* Links pinned to the bottom of the card */
+    .links {
+        display: flex;
+        gap: 16px;
+        margin: auto 0 0;
+    }
+
+    .links a {
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .links a:hover {
+        text-decoration: underline;
+    }
+</style>

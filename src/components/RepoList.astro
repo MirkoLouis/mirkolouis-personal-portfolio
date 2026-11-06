@@ -1,0 +1,112 @@
+---
+// "More on GitHub": recent public repos; long lists fade out and expand via <details>
+import type { GitHubRepo } from "../lib/types";
+import RepoRow from "./RepoRow.astro";
+import { COLLAPSED_ROWS, shouldCollapse } from "../lib/format";
+import { site } from "../data/site";
+
+interface Props {
+    repos: GitHubRepo[];
+    now: Date;
+}
+
+const { repos, now } = Astro.props;
+const collapsible = shouldCollapse(repos.length);
+
+// Collapsible lists split into an always-visible preview and the hidden rest
+const preview = collapsible ? repos.slice(0, COLLAPSED_ROWS) : repos;
+const rest = collapsible ? repos.slice(COLLAPSED_ROWS) : [];
+---
+{repos.length > 0 && (
+    <div class={`repo-list ${collapsible ? "collapsible" : ""}`}>
+        <ul class="rows preview">
+            {preview.map((repo) => (
+                <RepoRow repo={repo} now={now} />
+            ))}
+        </ul>
+
+        {collapsible ? (
+            <details>
+                <summary class="btn btn-outline">
+                    <span class="when-closed">Expand</span>
+                    <span class="when-open">Collapse</span>
+                </summary>
+                <ul class="rows">
+                    {rest.map((repo) => (
+                        <RepoRow repo={repo} now={now} />
+                    ))}
+                </ul>
+                <a class="full" href={site.githubRepos} target="_blank" rel="noopener noreferrer">View full list on GitHub →</a>
+            </details>
+        ) : (
+            <a class="full" href={site.githubRepos} target="_blank" rel="noopener noreferrer">View full list on GitHub →</a>
+        )}
+    </div>
+)}
+
+<style>
+    .rows {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Collapsed: the preview fades to fully transparent at the bottom */
+    .collapsible .preview {
+        mask-image: linear-gradient(to bottom, #000 60%, transparent);
+        -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+    }
+
+    /* Expanded: remove the fade */
+    .collapsible:has(details[open]) .preview {
+        mask-image: none;
+        -webkit-mask-image: none;
+    }
+
+    /* Open details stack vertically so the summary can move below the rows */
+    details[open] {
+        display: flex;
+        flex-direction: column;
+    }
+
+    details[open] summary {
+        order: 2;
+    }
+
+    details[open] .full {
+        order: 3;
+    }
+
+    summary {
+        list-style: none;
+        cursor: pointer;
+        align-self: center;
+        margin: 20px auto 0;
+        width: fit-content;
+    }
+
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .when-open,
+    details[open] .when-closed {
+        display: none;
+    }
+
+    details[open] .when-open {
+        display: inline;
+    }
+
+    /* Right-aligned so it reads as a separate action, not another row */
+    .full {
+        display: block;
+        width: fit-content;
+        margin: 16px 0 0 auto;
+        font-weight: 700;
+    }
+
+    details .full {
+        align-self: flex-end;
+    }
+</style>

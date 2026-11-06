@@ -1,0 +1,54 @@
+---
+// Projects section: featured cards + "More on GitHub" list from repos fetched by the page
+import FeaturedProjects from "./FeaturedProjects.astro";
+import RepoList from "./RepoList.astro";
+import { curatedProjects } from "../data/projects";
+import { EXCLUDED_REPOS, REPO_LIST_LIMIT, filterRepos, mergeFeatured, pickRecent } from "../lib/github";
+import type { GitHubRepo } from "../lib/types";
+
+interface Props {
+    repos: GitHubRepo[];
+    now: Date;
+    // Repos with their own section elsewhere on the page (kept out of the list)
+    shownElsewhere: string[];
+}
+
+const { repos, now, shownElsewhere } = Astro.props;
+
+// Curated cards with live stats merged in
+const featured = mergeFeatured(curatedProjects, repos);
+
+// Remaining recent repos, excluding anything featured or shown in another section
+const featuredNames = [...curatedProjects.flatMap((p) => (p.repo ? [p.repo] : [])), ...shownElsewhere];
+const list = pickRecent(filterRepos(repos, EXCLUDED_REPOS, featuredNames), REPO_LIST_LIMIT);
+---
+<section class="section projects" id="projects">
+    <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <FeaturedProjects projects={featured} now={now} />
+
+        {list.length > 0 && (
+            <div class="more">
+                <h3 class="more-title">More on GitHub</h3>
+                <RepoList repos={list} now={now} />
+            </div>
+        )}
+    </div>
+</section>
+
+<style>
+    /* Whole section in Inconsolata Nerd Font */
+    .projects {
+        font-family: var(--font-mono);
+        background: var(--surface);
+    }
+
+    .more {
+        margin-top: 56px;
+    }
+
+    .more-title {
+        font-size: 1.35rem;
+        margin-bottom: 8px;
+    }
+</style>

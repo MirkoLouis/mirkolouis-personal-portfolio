@@ -1,0 +1,25 @@
+# CI: test, type-check and build inside the Nix dev shell on every push to main and every PR
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            # Same toolchain as local development (Node 24 from the pinned flake)
+            - uses: cachix/install-nix-action@v31
+
+            - name: Flake check
+              run: nix flake check
+
+            - name: Test, type-check and build
+              run: nix develop --command bash -c "npm ci && npm test && npm run check && npm run build"
